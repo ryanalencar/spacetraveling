@@ -7,19 +7,21 @@
   margin-top: 4.25rem;
 
   a {
+    display: block;
     transition: all 0.3s ease-in-out;
+    margin: 3rem 0rem;
+
     &:hover {
       text-decoration: underline;
       text-decoration-color: var(--highlight);
       text-underline-offset: 0.125rem;
-      background-color: var(--highlight);
     }
   }
 }
 
 .postTitle {
   font-weight: bold;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   line-height: 2.125rem;
   color: var(--heading);
 }
