@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Header from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
 
@@ -26,20 +27,22 @@ interface PostProps {
   post: Post;
 }
 
-// export default function Post() {
-//   // TODO
-// }
+export default function Post({ post }: PostProps) {
+  console.log(post);
+  return (
+    <>
+      <Header />
+      {/* <h1>{post.data.title}</h1> */}
+    </>
+  );
+}
 
 // export const getStaticPaths = async () => {
 //   const prismic = getPrismicClient({});
-//   const posts = await prismic.getByType(TODO);
-
-//   // TODO
+//   const posts = await prismic.getByType();
 // };
 
-// export const getStaticProps = async ({params }) => {
+// export const getStaticProps = async ({ params }) => {
 //   const prismic = getPrismicClient({});
-//   const response = await prismic.getByUID(TODO);
-
-//   // TODO
+//   const response = await prismic.getByUID();
 // };
