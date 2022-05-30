@@ -30,7 +30,7 @@ interface HomeProps {
 }
 
 export default function Home({ posts }: HomeProps) {
-  console.log(posts);
+  const handleLoadMorePosts = () => {};
 
   return (
     <>
@@ -74,6 +74,14 @@ export default function Home({ posts }: HomeProps) {
               </Link>
             ))}
           </div>
+
+          <button
+            type="button"
+            onClick={handleLoadMorePosts}
+            className={styles.loadPostsButton}
+          >
+            Carregar mais
+          </button>
         </div>
       </main>
     </>
@@ -82,17 +90,7 @@ export default function Home({ posts }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const posts = await prismic.getByType('posts');
-
-  // const postsFormatted = posts.results.map(post => ({
-  //   slug: post.uid ?? '',
-  //   title: post.data.title,
-  //   subtitle: post.data.subtitle,
-  //   author: post.data.author,
-  //   updatedAt: format(parseISO(post.last_publication_date), 'dd LLL yyyy'),
-  // }));
-
-  // posts.results = postsFormatted;
+  const posts = await prismic.getByType('posts', { pageSize: 3 });
 
   console.log(posts);
   return {
