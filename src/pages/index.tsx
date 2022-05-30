@@ -1,4 +1,8 @@
 import { GetStaticProps } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import { FiCalendar, FiUser } from 'react-icons/fi';
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -24,13 +28,57 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-// export default function Home() {
-//   // TODO
-// }
+export default function Home({ postsPagination }: HomeProps) {
+  return (
+    <>
+      <Head>
+        <title>Posts | SpaceTraveling</title>
+      </Head>
+      <main className={commonStyles.container}>
+        <div className={styles.postsContainer}>
+          <Image
+            src="/imgs/logo.png"
+            alt="spacetraveling logo"
+            width="236"
+            height="25"
+            priority
+          />
 
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient({});
-//   // const postsResponse = await prismic.getByType(TODO);
+          <div className={styles.postsInfo}>
+            <Link href="/" passHref>
+              <a>
+                <strong className={styles.postTitle}>
+                  Como utilizar Hooks
+                </strong>
+                <p className={styles.postSubtitle}>
+                  Pensando em sincronização em vez de ciclos de vida
+                </p>
+                <div className={styles.postFooterInfo}>
+                  <div>
+                    <FiCalendar />
+                    <time>15 Mar 2022</time>
+                  </div>
+                  <div>
+                    <FiUser />
+                    <address>Ryan Alencar</address>
+                  </div>
+                </div>
+              </a>
+            </Link>
+          </div>
+        </div>
+      </main>
+    </>
+  );
+}
 
-//   // TODO
-// };
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient({});
+  const posts = await prismic.getByType('posts');
+  console.log(posts);
+  return {
+    props: {
+      posts,
+    },
+  };
+};
