@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 
+import { ptBR } from 'date-fns/locale';
 import Header from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
@@ -78,9 +79,9 @@ export default function Post({ post }: PostProps) {
           <div className={styles.articleInfo}>
             <div>
               <FiCalendar />
-              <time>
-                {format(parseISO(first_publication_date), 'dd LLL yyyy')}
-              </time>
+              {format(new Date(first_publication_date), 'dd MMM yyyy', {
+                locale: ptBR,
+              })}
             </div>
             <div>
               <FiUser />

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { format, parseISO } from 'date-fns';
 
+import { ptBR } from 'date-fns/locale';
+import { useState } from 'react';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
@@ -26,11 +28,36 @@ interface PostPagination {
 }
 
 interface HomeProps {
-  posts: PostPagination;
+  postsPagination: PostPagination;
 }
 
-export default function Home({ posts }: HomeProps) {
-  const handleLoadMorePosts = () => {};
+export default function Home({ postsPagination }: HomeProps) {
+  const [posts, setPosts] = useState(postsPagination.results);
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
+
+  const handleLoadMorePosts = async () => {
+    const responseFetch = await fetch(nextPage).then(response =>
+      response.json()
+    );
+    const { results, next_page: fetchedNextPage } = responseFetch;
+
+    const fetchedPosts = results.map((post: Post) => {
+      return {
+        uid: post.uid,
+        first_publication_date: post.first_publication_date,
+        data: {
+          title: post.data.title,
+          subtitle: post.data.subtitle,
+          author: post.data.author,
+        },
+      };
+    });
+
+    const updatedPosts = [...posts, ...fetchedPosts];
+
+    setPosts(updatedPosts);
+    setNextPage(fetchedNextPage);
+  };
 
   return (
     <>
@@ -48,7 +75,7 @@ export default function Home({ posts }: HomeProps) {
           />
 
           <div className={styles.postsInfo}>
-            {posts.results.map(post => (
+            {posts?.map(post => (
               <Link key={post.uid} href={`/post/${post.uid}`} passHref>
                 <a>
                   <strong className={styles.postTitle}>
@@ -60,8 +87,11 @@ export default function Home({ posts }: HomeProps) {
                       <FiCalendar />
                       <time>
                         {format(
-                          parseISO(post.first_publication_date),
-                          'dd LLL yyyy'
+                          new Date(post.first_publication_date),
+                          'dd MMM yyyy',
+                          {
+                            locale: ptBR,
+                          }
                         )}
                       </time>
                     </div>
@@ -74,14 +104,15 @@ export default function Home({ posts }: HomeProps) {
               </Link>
             ))}
           </div>
-
-          <button
-            type="button"
-            onClick={handleLoadMorePosts}
-            className={styles.loadPostsButton}
-          >
-            Carregar mais
-          </button>
+          {nextPage && (
+            <button
+              type="button"
+              onClick={handleLoadMorePosts}
+              className={styles.loadPostsButton}
+            >
+              Carregar mais posts
+            </button>
+          )}
         </div>
       </main>
     </>
@@ -90,11 +121,28 @@ export default function Home({ posts }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const posts = await prismic.getByType('posts', { pageSize: 3 });
+  const response = await prismic.getByType('posts', {
+    pageSize: 3,
+    fetch: ['publication.title', 'publication.content'],
+  });
+
+  const { next_page, results: posts } = response;
+
+  const results = posts.map(post => {
+    return {
+      uid: post.uid,
+      first_publication_date: post.first_publication_date,
+      data: {
+        title: post.data.title,
+        subtitle: post.data.subtitle,
+        author: post.data.author,
+      },
+    };
+  });
 
   return {
     props: {
-      posts,
+      postsPagination: { next_page, results },
     },
   };
 };
