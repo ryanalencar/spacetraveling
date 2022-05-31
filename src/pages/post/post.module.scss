@@ -1,1 +1,109 @@
-// TODO
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.mHero {
+  position: relative;
+  flex-direction: column;
+  min-height: 365px;
+  overflow: hidden;
+  padding: 100px 0 75px;
+}
+
+.mHero.withPicture {
+  color: #fff;
+}
+
+@media only screen and (min-width: 80rem) {
+  .mHero.withPicture {
+    min-height: 565px;
+  }
+}
+
+@media only screen and (min-width: 48rem) {
+  .mHero.withPicture {
+    min-height: 450px;
+  }
+}
+
+@media only screen and (min-width: 48rem) {
+  .mHero {
+    min-height: 400px;
+    padding: 150px 0 75px;
+  }
+}
+
+.mHeroPicture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.mHeroPicture.inPost {
+  opacity: 1;
+}
+
+.post {
+  max-width: 720px;
+  margin: 5rem auto 0;
+
+  h1 {
+    line-height: 3.625rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: left;
+    color: var(--heading);
+  }
+
+  .articleInfo {
+    margin: 1rem 0 5rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--info);
+    justify-content: start;
+    grid-gap: 2rem;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      grid-gap: 0.25rem;
+    }
+  }
+
+  .postContent {
+    font-size: 1.125rem;
+
+    p,
+    span,
+    a,
+    ul {
+      font-size: 1.125rem;
+      line-height: 1.8rem;
+      margin: 1.8rem 0;
+    }
+
+    a {
+      color: var(--highlight);
+    }
+
+    strong {
+      font-weight: 700;
+      color: var(--heading);
+    }
+
+    p {
+      color: var(--heading);
+    }
+  }
+}

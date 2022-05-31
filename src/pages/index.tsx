@@ -49,7 +49,7 @@ export default function Home({ posts }: HomeProps) {
 
           <div className={styles.postsInfo}>
             {posts.results.map(post => (
-              <Link href={`/post/${post.uid}`} passHref>
+              <Link key={post.uid} href={`/post/${post.uid}`} passHref>
                 <a>
                   <strong className={styles.postTitle}>
                     {post.data.title}
@@ -92,7 +92,6 @@ export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
   const posts = await prismic.getByType('posts', { pageSize: 3 });
 
-  console.log(posts);
   return {
     props: {
       posts,
