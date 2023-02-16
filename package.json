@@ -18,10 +18,10 @@
     "@prismicio/slice-simulator-react": "^0.2.2",
     "@prismicio/types": "^0.1.27",
     "date-fns": "^2.19.0",
-    "next": "10.0.7",
+    "next": "^13.1.6",
     "prismic-dom": "^2.2.5",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^4.2.0",
     "whatwg-fetch": "^3.6.2"
   },
