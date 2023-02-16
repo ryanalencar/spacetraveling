@@ -38,9 +38,9 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
   const router = useRouter();
-  const { data, first_publication_date } = post;
+  const { data, first_publication_date } = post || {};
 
-  const wordsCount = data.content.reduce((sum, contentItem) => {
+  const wordsCount = data?.content.reduce((sum, contentItem) => {
     sum += contentItem?.heading?.split(' ').length ?? 0;
 
     const words = contentItem?.body?.map(
@@ -63,19 +63,19 @@ export default function Post({ post }: PostProps) {
   return (
     <>
       <Head>
-        <title>{data.title} | SpaceTraveling</title>
+        <title>{data?.title} | SpaceTraveling</title>
       </Head>
       <Header />
       <main className={styles.container}>
-        {data.banner && data.banner.url && (
+        {data?.banner && data?.banner.url && (
           <section className={`${styles.mHero} ${styles.withPicture}`}>
             <div className={`${styles.mHeroPicture} ${styles.inPost}`}>
-              <Image src={data.banner.url} alt="post banner" layout="fill" />
+              <Image src={data?.banner.url} alt="post banner" layout="fill" />
             </div>
           </section>
         )}
         <article className={styles.post}>
-          <h1>{data.title}</h1>
+          <h1>{data?.title}</h1>
           <div className={styles.articleInfo}>
             <div>
               <FiCalendar />
@@ -85,7 +85,7 @@ export default function Post({ post }: PostProps) {
             </div>
             <div>
               <FiUser />
-              <address>{post.data.author}</address>
+              <address>{data?.author}</address>
             </div>
             <div>
               <FiClock />
@@ -93,7 +93,7 @@ export default function Post({ post }: PostProps) {
             </div>
           </div>
 
-          {post.data.content.map(content => {
+          {data?.content.map(content => {
             return (
               <section key={content.heading}>
                 <h2>{content.heading}</h2>
